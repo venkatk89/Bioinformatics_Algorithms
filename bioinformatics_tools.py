@@ -1,7 +1,11 @@
 
+# Biological structures
 Nucleotides = ["A", "T", "C", "G"]
 
+Base_pairs = {"A":"T", "T":"A", "C":"G", "G":"C"}
 
+
+# Useful functions in bioinformatics
 def dna_seq_validate(seq):
     '''
     Function to validate a seq 
@@ -19,7 +23,6 @@ def dna_seq_validate(seq):
 
 
 
-
 def dna_freq_counter(seq):
     ''' 
     Function to find the length of a DNA or RNA sequence
@@ -31,3 +34,26 @@ def dna_freq_counter(seq):
     for nucleotide in temp_seq:
         temp_counter[nucleotide] = temp_counter[nucleotide] + 1
     return temp_counter
+
+
+def rna_transcription(seq):
+    '''
+    Function to transcribe DNA to RNA
+    Args: The DNA sequence
+    Return: The RNA sequence transcribed from the DNA
+    '''
+    temp_seq = seq.upper()
+    return temp_seq.replace("T", "U")
+
+
+def dna_strand_compliment(seq):
+    '''
+    Function to produce the reverse complement of a dna strand
+    Args: The DNA sequence
+    Return: The reverse compliment of the DNA strand. (BP is complimented, then string is reversed)
+    '''
+    temp_seq = ""
+    for i in range(len(seq)):
+        temp_seq += Base_pairs[seq[(len(seq) - 1 - i)]]
+    return temp_seq
+
