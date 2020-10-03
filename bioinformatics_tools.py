@@ -2,7 +2,7 @@
 # Biological structures
 Nucleotides = ["A", "T", "C", "G"]
 
-Base_pairs = {"A":"T", "T":"A", "C":"G", "G":"C"}
+Base_pairs = {"A": "T", "T": "A", "C": "G", "G": "C"}
 
 
 # Useful functions in bioinformatics
@@ -12,7 +12,7 @@ def dna_seq_validate(seq):
     Args: The DNA sequence
     Return: The processed string if valid DNA sequence
             0 if invalid DNA sequence
-       
+
     '''
     temp_seq = seq.upper()
     for nucleotide in temp_seq:
@@ -55,3 +55,42 @@ def dna_strand_compliment(seq):
         temp_seq += Base_pairs[seq[(len(seq) - 1 - i)]]
     return temp_seq
 
+
+def gc_content(seq):
+    '''
+    Function to return the GC count of a DNA/RNA sequence
+    Args:
+        seq: A valid DNA/RNA sequence
+    Return:
+        gc: The gc count of seq
+    '''
+    return round(((seq.count("C") + seq.count("G")) / len(seq)), 6)
+
+
+def gc_content_subset(seq, k):
+    '''
+    Function to return the GC content of substrings in a DNA/RNA sequence
+    Ags:
+        Seq: A valid DNA/RNA sequence
+        k: length of substring. It'll be the window size
+    Return:
+        res: a list containing gc content of each windows
+    '''
+    res = []
+    for i in range(0, (len(seq) - k + 1), k):
+        substring = seq[i:i+k]
+        res.append(gc_content(substring))
+    return res
+
+
+def hamming_distance(seq_1, seq_2):
+    '''Function to return the hamming distance between two DNA/RNA sequence'''
+    ham_dist = 0
+    if len(seq_1) != len(seq_2):
+        print("Invalid Sequence sent. Make sure both sequences are of same length")
+        return - 1
+    else:
+        for i in range(len(seq_1)):
+            if seq_1[i] != seq_2[i]:
+                ham_dist += 1
+        return ham_dist
