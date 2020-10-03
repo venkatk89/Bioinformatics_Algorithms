@@ -21,8 +21,6 @@ def dna_seq_validate(seq):
     return temp_seq
 
 
-
-
 def dna_freq_counter(seq):
     ''' 
     Function to find the length of a DNA or RNA sequence

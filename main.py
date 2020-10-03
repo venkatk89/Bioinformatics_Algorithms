@@ -1,4 +1,6 @@
 from bioinformatics_tools import *
+from mathematical_tools import *
+
 
 seq = "AAAACCCGGT"
 
@@ -20,5 +22,9 @@ DNA_seq = dna_seq_validate(seq)
 #print("The transcribed RNA is", rna_transcription(seq))
 #print("The complementary strand is:", dna_strand_compliment(dna_seq_validate(seq)))
 
+# for i in range(10):
+#     print("Fibonacci Series element", i, ":", fibonacci(n=i, k=1))
 
+#print(fibonacci(n=5, k=3))
 
+print(decaying_fibonacci(n=82, k = 1, decay_rate=20))
