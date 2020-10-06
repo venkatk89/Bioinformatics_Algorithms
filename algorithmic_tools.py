@@ -1,42 +1,40 @@
 
 
-def fibonacci(n, k = 1):
-    '''
-    Function to return the nth term of a fibonacci series
-    Args:
-        n: the value of n
-        k: factor by which F(n-2) is multiplied with (no of rabbit pairs, one rabbits pair gives birth to)
-    return:
-        value: value of F(n)
-    '''
-    if n == 0:
-        return 0
-    if n == 1:
-        return 1
-    else: 
-        return (fibonacci((n - 1), k) + k*fibonacci((n - 2), k))
-
-
 # this algorithm is not computationally efficient
-def decaying_fibonacci(n, decay_rate, k = 1):
+# def fibonacci(n, k = 1):
+#     if n == 0:
+#         return 0
+#     if n == 1:
+#         return 1
+#     else:
+#         return (fibonacci((n - 1), k) + k * fibonacci((n - 2), k))
+
+
+def fibonacci(n, k=1):
     '''
     Function to return the nth term of a fibonacci series
     Args:
         n: the value of n
         k: factor by which F(n-2) is multiplied with (no of rabbit pairs, one rabbits pair gives birth to)
-        decay_rate: number of terms a rabbit pair would be alive
     return:
         value: value of F(n)
     '''
-    if n <= 0:
-        return 0
-    if n == 1:
-        return 1
-    else: 
-        return (decaying_fibonacci((n - 1), decay_rate, k) + k*decaying_fibonacci((n - 2), decay_rate, k) - decaying_fibonacci((n - decay_rate), decay_rate, k))
+    n_1, n_2 = 1, 1  # n_0 = 0
+    for i in range(0, n):
+        n_1, n_2 = n_2, (n_2 + (n_1 * k))
+    return n_1
 
 
-
+# def decaying_fibonacci(n, decay_rate, k=1):
+#     '''
+#     Function to return the nth term of a fibonacci series
+#     Args:
+#         n: the value of n
+#         k: factor by which F(n-2) is multiplied with (no of rabbit pairs, one rabbits pair gives birth to)
+#         decay_rate: number of terms a rabbit pair would be alive
+#     return:
+#         value: value of F(n)
+#     '''
 
 def fasta_to_dict(file_path):
     '''
@@ -51,7 +49,8 @@ def fasta_to_dict(file_path):
     key = ""
     for line in f1:
         if ">" in line:
-            key = line[1:(len(line)-1)] # fasta header starts with ">" and ends with "\n" 
+            # fasta header starts with ">" and ends with "\n"
+            key = line[1:(len(line)-1)]
             seq_dict[key] = ""
         else:
             seq_dict[key] += line.strip('\n')

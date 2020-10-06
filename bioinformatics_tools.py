@@ -1,11 +1,9 @@
-
-# Biological structures
-Nucleotides = ["A", "T", "C", "G"]
-
-Base_pairs = {"A": "T", "T": "A", "C": "G", "G": "C"}
-
+# importing structures in bio_struct file
+from bio_structures import *
 
 # Useful functions in bioinformatics
+
+
 def dna_seq_validate(seq):
     '''
     Function to validate a seq 
@@ -94,3 +92,33 @@ def hamming_distance(seq_1, seq_2):
             if seq_1[i] != seq_2[i]:
                 ham_dist += 1
         return ham_dist
+
+
+def dna_translation(seq, init_pos=0):
+    '''
+    Function to Translate DNA strand to corresponding Protein string
+    Args:
+        seq: DNA sequence
+        init_pos: position from which translation should be started
+    Return:
+        A Protein string
+    '''
+    protein_string = ""
+    for i in range(init_pos, len(seq) - 2, 3):
+        protein_string += DNA_Codons[seq[i:i + 3]]
+    return protein_string
+
+
+def rna_translation(seq, init_pos=0):
+    '''
+    Function to Translate RNA strand to corresponding Protein string
+    Args:
+        seq: RNA sequence
+        init_pos: position from which translation should be started
+    Return:
+        A Protein string
+    '''
+    protein_string = ""
+    for i in range(init_pos, len(seq) - 2, 3):
+        protein_string += RNA_Codons[seq[i:i + 3]]
+    return protein_string
