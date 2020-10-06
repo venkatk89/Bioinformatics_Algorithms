@@ -1,6 +1,7 @@
 # importing structures in bio_struct file
 from bio_structures import *
 
+
 # Useful functions in bioinformatics
 
 
@@ -42,7 +43,7 @@ def rna_transcription(seq):
     return temp_seq.replace("T", "U")
 
 
-def dna_strand_compliment(seq):
+def dna_reverse_compliment(seq):
     '''
     Function to produce the reverse complement of a dna strand
     Args: The DNA sequence
@@ -122,3 +123,72 @@ def rna_translation(seq, init_pos=0):
     for i in range(init_pos, len(seq) - 2, 3):
         protein_string += RNA_Codons[seq[i:i + 3]]
     return protein_string
+
+
+def generate_reading_frames(seq):
+    '''
+    Function to translate all 6 combos of the sequence (3 in seq + 3 in reverse complement of seq)
+    Args:
+        seq: A valid DNA string
+    Return:
+        A list of 6 protein strings
+    '''
+    frames = []
+    frames.append(dna_translation(seq, 0))
+    frames.append(dna_translation(seq, 1))
+    frames.append(dna_translation(seq, 2))
+    frames.append(dna_translation(dna_reverse_compliment(seq), 0))
+    frames.append(dna_translation(dna_reverse_compliment(seq), 1))
+    frames.append(dna_translation(dna_reverse_compliment(seq), 2))
+    return frames
+
+
+def proteins_from_seq(aa_seq):
+    '''
+    Function to return possible proteins from an amino acid sequence
+    Args:
+        aa_seq: An amino acid sequence
+    Return:
+        A list of all possible proteins
+    '''
+    all_proteins = []
+    current_protein_tracking = []
+    for aa in list(aa_seq):
+        if aa == "_":   # if stop codon is found
+            for p in current_protein_tracking:
+                all_proteins.append(p)
+            current_protein_tracking = []
+
+        else:
+            if aa == "M":
+                current_protein_tracking.append("")
+            for i in range(len(current_protein_tracking)):
+                current_protein_tracking[i] += aa
+    return all_proteins
+
+
+def proteins_from_seq_orfs(seq, init_pos=0, end_pos=3, ordered=False):
+    '''
+    Function to find all possible proteins from open reading frames of a sequence
+    Args:
+        seq: A valid DNA sequence
+        init_pos: starting position to consider in the seq
+        end_pos: ending position to consider in the seq
+        ordered: whether to sort the list of all proteins
+    Return:
+        A list of all possible proteins from open reading frames of a sequence
+    '''
+    all_proteins = []
+    if init_pos >= end_pos:
+        print("Enter valid start and end positions")
+    else:
+        # generate all 6 open reading frames from sequence
+        reading_frames = generate_reading_frames(seq[init_pos:end_pos])
+        # find possible proteins from each reading frame and add it to the list
+        for frame in reading_frames:
+            proteins = proteins_from_seq(frame)
+            for each_protein in proteins:
+                all_proteins.append(each_protein)
+        if ordered == True:
+            return sorted(all_proteins, key=len, reverse=True)
+    return all_proteins

@@ -55,3 +55,20 @@ def fasta_to_dict(file_path):
         else:
             seq_dict[key] += line.strip('\n')
     return seq_dict
+
+
+def motif_search_overlapping(seq, subseq, init_pos=0):
+    '''
+    Function to return the positions of occurances of motifs in the genetic string
+    Args:
+        seq: the genetic string
+        subseq: the motif
+        init_pos: starting point in the seq
+    Return:
+        A list containing all the start_indices the motif occurs in the genetic string
+    '''
+    start_indices = []
+    for i in range(init_pos, (len(seq) - len(subseq) + 1)):
+        if seq[i:i + len(subseq)] == subseq:
+            start_indices.append(i + 1)
+    return start_indices
