@@ -83,8 +83,8 @@ seq = "GGGCGGCTCG"
 # for p in proteins_from_seq_orfs(seq, 0, len(seq), True):
 #     print(p)
 
-
-dna_seq = fasta_to_dict('sample_fasta.txt')
-seq = dna_seq['Rosalind_0768']
-for p in set(proteins_from_seq_orfs(seq, 0, len(seq), True)):
-    print(p)
+# # proteins_from_seq_orfs() from fasta
+# dna_seq = fasta_to_dict('sample_fasta.txt')
+# seq = dna_seq['Rosalind_0768']
+# for p in set(proteins_from_seq_orfs(seq, 0, len(seq), True)):
+#     print(p)
