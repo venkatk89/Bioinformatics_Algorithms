@@ -1,5 +1,6 @@
 # importing structures in bio_struct file
 from bio_structures import *
+import numpy as np
 
 
 # Useful functions in bioinformatics
@@ -192,3 +193,52 @@ def proteins_from_seq_orfs(seq, init_pos=0, end_pos=3, ordered=False):
         if ordered == True:
             return sorted(all_proteins, key=len, reverse=True)
     return all_proteins
+
+
+def profile_matrix(seq_dict):
+    '''
+    Function to return the profile matrix for a collection of sequences
+    Args:
+        seq_dict: A dictionary containing the sequences
+    Return:
+        The profile matrix with row labels: [A, C, G, T]
+    '''
+    x = len(list(seq_dict.values())[1])
+    count_A = [0] * x
+    count_C = [0] * x
+    count_G = [0] * x
+    count_T = [0] * x
+    for seq in seq_dict.values():
+        for i in range(len(seq)):
+            if seq[i] == "A":
+                count_A[i] += 1
+            if seq[i] == "C":
+                count_C[i] += 1
+            if seq[i] == "G":
+                count_G[i] += 1
+            if seq[i] == "T":
+                count_T[i] += 1
+    return [count_A, count_C, count_G, count_T]
+
+
+def consensus_sequence(seq_dict):
+    '''
+    Function to return the consensus string from a dictionary of strings
+    Args:
+        seq_dict: dictionary of sequences
+    Return:
+        The consensus string
+    '''
+    pro_mat = profile_matrix(seq_dict)
+    count_A, count_C, count_G, count_T = pro_mat[0], pro_mat[1], pro_mat[2], pro_mat[3]
+    con_seq = ""
+    for i in range(len(count_A)):
+        if (count_A[i] >= count_C[i]) and (count_A[i] >= count_T[i]) and (count_A[i] >= count_G[i]):
+            con_seq += "A"
+        elif (count_C[i] >= count_G[i]) and (count_C[i] >= count_T[i]):
+            con_seq += "C"
+        elif (count_G[i] >= count_T[i]):
+            con_seq += "G"
+        else:
+            con_seq += "T"
+    return con_seq

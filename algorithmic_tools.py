@@ -59,7 +59,7 @@ def fasta_to_dict(file_path):
 
 def motif_search_overlapping(seq, subseq, init_pos=0):
     '''
-    Function to return the positions of occurances of motifs in the genetic string
+    Function to return the positions of occurances (1-indexed) of motifs in the genetic string
     Args:
         seq: the genetic string
         subseq: the motif
@@ -72,3 +72,28 @@ def motif_search_overlapping(seq, subseq, init_pos=0):
         if seq[i:i + len(subseq)] == subseq:
             start_indices.append(i + 1)
     return start_indices
+
+
+def most_frequent_kmer(seq, k):
+    """
+    Function to return the k-mer that is most frequently occuring in the sequence
+    Args:
+        seq: the genetic sequence
+        k : length of k-mer
+    Return:
+        k-mers that occur the most times in the sequence
+    """
+    kmer_count = {}
+    for i in range(len(seq) - k + 1):
+        kmer = seq[i:i + k]
+        if kmer in kmer_count.keys():
+            kmer_count[kmer] += 1
+        else:
+            kmer_count[kmer] = 0
+    max_value = max(kmer_count.items(), key=lambda x: x[1])[1]
+    list_of_kmers = []
+    for key, value in kmer_count.items():
+        if value == max_value:
+            list_of_kmers.append(key)
+
+    return list_of_kmers

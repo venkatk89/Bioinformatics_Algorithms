@@ -1,6 +1,6 @@
 
 # Biological structures
-Nucleotides = ["A", "T", "C", "G"]
+Nucleotides = ["A", "C", "G", "T"]
 
 Base_pairs = {"A": "T", "T": "A", "C": "G", "G": "C"}
 
