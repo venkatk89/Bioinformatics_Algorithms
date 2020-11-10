@@ -118,3 +118,34 @@ seq = "GGGCGGCTCG"
 # # min_skew_finder()
 # seq = "CCTATCGGTGGATTAGCATGTCCCTGTACGTTTCGCCGCGAACTAGTTCACACGGCTTGATGGCAAATGGTTTTTCCGGCGACCGTAATCGTCCACCGAG"
 # print(min_skew_finder(seq))
+
+
+# # motif_search_overlapping_approx()
+# seq = "CGCCCGAATCCAGAACGCATTCCCATATTTCGGGACCACTGGCCTCCACGGTACGGACGTCAATCAAATGCCTAGCGGCTTGTGGTTTCTCCTACGCTCC"
+# subseq = "ATTCTGGA"
+# d = 3
+# for i in motif_search_overlapping_approx(seq, subseq, d):
+#     print(i, end=" ")
+
+
+# # kmer_frequencies()
+# seq = "ACGCGGCTCTGAAA"
+# k = 2
+# for i in kmer_frequencies(seq, k):
+#     print(i, end=" ")
+
+
+# # lexicographic_kmer
+# print(lexicographic_kmer(7076, 11))
+
+
+# # lexicographic_kmer_rank
+# print(lexicographic_kmer_rank("TGTGCTGGAGAACTACCTATGCGGA"))
+
+# # kmer_neighbours
+# f = open("sample_fasta.txt", "w")
+# kmer = "TAACTATCCT"
+# d = 2
+# for i in kmer_neighbours(kmer, d):
+#     f.write(i)
+#     f.write("\n")

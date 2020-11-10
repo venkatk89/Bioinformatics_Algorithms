@@ -103,6 +103,53 @@ def CountOccurrences(string, substring):
     return count
 
 
+def kmer_frequencies(seq, k):
+    '''
+    Function to return the frequency of occurances of all possible k-mers
+    Args:
+        seq: the DNA sequence
+        k: length of k-mer
+    Return:
+        A list of frequencies of all kmer ordered lexicographically
+    '''
+    from itertools import product
+    all_kmers = list(product(["A", "C", "G", "T"], repeat=k))
+    frequencies = []
+    for i in all_kmers:
+        kmer = "".join(i)
+        frequencies.append(CountOccurrences(seq, kmer))
+    return frequencies
+
+
+def lexicographic_kmer(index, k):
+    '''
+    Function to return the kmer that has a rank = index when ordered lexicographically
+    Args:
+        index: rank in lexicographic order
+        k: length of kmer
+    Return:
+        the kmer of rank = index
+    '''
+    ranked_nucleotide = {0: "A", 1: "C", 2: "G", 3: "T"}
+    if k == 1:
+        return ranked_nucleotide[index]
+    return lexicographic_kmer((index//4), (k-1)) + ranked_nucleotide[index % 4]
+
+
+def lexicographic_kmer_rank(kmer):
+    '''
+    Function to return the rank of kmer in the lexicographic order
+    Arg:  
+        kmer: the kmer
+    Return:
+        rank of given kmer among all kmers ordered lexicographically
+    '''
+    nucleotide_rank = {"A": 0, "C": 1, "G": 2, "T": 3}
+    if len(kmer) == 1:
+        return nucleotide_rank[kmer]
+    return 4*lexicographic_kmer_rank(kmer[:-1]) + nucleotide_rank[kmer[-1]]
+
+
 def most_frequent_kmer(seq, k):
     """
     Function to return the k-mer that is most frequently occuring in the sequence
@@ -196,3 +243,27 @@ def motif_search_overlapping_approx(seq, subseq, d, init_pos=0):
         if (hamming_distance(seq[i:i + len(subseq)], subseq) <= d):
             start_indices.append(i)
     return start_indices
+
+
+def kmer_neighbours(kmer, d):
+    '''
+    Function to return the kmers that has a hamming distance less than d from the given kmer
+    Args:
+        kmer: the kmer around which the neighbourhood needs to be calculated
+        d: the size of the neighbourhood
+    Returns:
+        A list of kmers in the d-neighbourhood
+    '''
+    if d == 0:
+        return [kmer]
+    if len(kmer) == 1:
+        return ["A", "C", "G", "T"]
+    neighbourhood = []
+    suffix_neighbors = kmer_neighbours(kmer[1:], d)
+    for i in suffix_neighbors:
+        if hamming_distance(i, kmer[1:]) < d:
+            for j in ["A", "C", "G", "T"]:
+                neighbourhood.append((j + i))
+        else:
+            neighbourhood.append((kmer[0] + i))
+    return neighbourhood
