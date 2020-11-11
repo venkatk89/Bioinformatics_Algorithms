@@ -1,3 +1,4 @@
+from bioinformatics_tools import *
 # this algorithm is not computationally efficient
 # def fibonacci(n, k = 1):
 #     if n == 0:
@@ -165,7 +166,7 @@ def most_frequent_kmer(seq, k):
         if kmer in kmer_count.keys():
             kmer_count[kmer] += 1
         else:
-            kmer_count[kmer] = 0
+            kmer_count[kmer] = 1
     max_value = max(kmer_count.items(), key=lambda x: x[1])[1]
     list_of_kmers = []
     for key, value in kmer_count.items():
@@ -267,3 +268,63 @@ def kmer_neighbours(kmer, d):
         else:
             neighbourhood.append((kmer[0] + i))
     return neighbourhood
+
+
+def most_frequent_kmer_approx(seq, k, d):
+    """
+    Function the return the kmers with atmost d-mismatches in the string
+    Args:
+        seq: the DNA sequence
+        k: length of kmer
+        d: maximum mismatches in kmer allowed
+    Return:
+        The list of kmers that approximately occur in the seq
+    """
+    kmer_count = {}
+    kmer_neighbourhood = []
+    for i in range(len(seq) - k + 1):
+        kmer = seq[i:i + k]
+        kmer_neighbourhood += kmer_neighbours(kmer, d)
+    for kmer in kmer_neighbourhood:
+        if kmer in kmer_count.keys():
+            kmer_count[kmer] += 1
+        else:
+            kmer_count[kmer] = 1
+    max_value = max(kmer_count.items(), key=lambda x: x[1])[1]
+    list_of_kmers = []
+    for key, value in kmer_count.items():
+        if value == max_value:
+            list_of_kmers.append(key)
+
+    return list_of_kmers
+
+
+def most_frequent_kmer_approx_reverse(seq, k, d):
+    """
+    Function the return the kmers and its reverse compliment with atmost d-mismatches in the string
+    Args:
+        seq: the DNA sequence
+        k: length of kmer
+        d: maximum mismatches in kmer allowed
+    Return:
+        The list of kmers that approximately occur in the seq
+    """
+    kmer_count = {}
+    kmer_neighbourhood = []
+    for i in range(len(seq) - k + 1):
+        kmer = seq[i:i + k]
+        kmer_neighbourhood += kmer_neighbours(kmer, d)
+        kmer_reverse = dna_reverse_compliment(kmer)
+        kmer_neighbourhood += kmer_neighbours(kmer_reverse, d)
+    for kmer in kmer_neighbourhood:
+        if kmer in kmer_count.keys():
+            kmer_count[kmer] += 1
+        else:
+            kmer_count[kmer] = 1
+    max_value = max(kmer_count.items(), key=lambda x: x[1])[1]
+    list_of_kmers = []
+    for key, value in kmer_count.items():
+        if value == max_value:
+            list_of_kmers.append(key)
+
+    return list_of_kmers

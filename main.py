@@ -149,3 +149,19 @@ seq = "GGGCGGCTCG"
 # for i in kmer_neighbours(kmer, d):
 #     f.write(i)
 #     f.write("\n")
+
+
+# # most_frequent_kmer_approx
+# seq = "AGTCAGTC"
+# k = 4
+# d = 2
+# for i in most_frequent_kmer_approx(seq, k, d):
+#     print(i, end=" ")
+
+
+# # most_frequent_kmer_approx_reverse()
+# seq = "ACGTTGCATGTCGCATGATGCATGAGAGCT"
+# k = 4
+# d = 1
+# for i in most_frequent_kmer_approx_reverse(seq, k, d):
+#     print(i, end=" ")
