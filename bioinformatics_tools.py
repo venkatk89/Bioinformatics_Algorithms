@@ -1,5 +1,6 @@
 # importing structures in bio_struct file
 from bio_structures import *
+from algorithmic_tools import *
 import numpy as np
 
 
@@ -242,3 +243,120 @@ def consensus_sequence(seq_dict):
         else:
             con_seq += "T"
     return con_seq
+
+
+def motif_enumeration(dna_seqs, k, d):
+    '''
+    A function to return all (k,d)-motifs appearing in list of DNA sequences
+    Given a collection of strings Dna and an integer d, a k-mer is a (k,d)-motif 
+    if it appears in every string from Dna with at most d mismatches
+    Args:
+        dna_seqs: A list of valid DNA sequences
+        k: length of motifs
+        d: no. of max. mismatches
+    Return:
+        A list containing all (k,d)-kmer motifs
+    '''
+    kmer_motifs = []
+    kmer_all = []
+    for seq in dna_seqs:
+        for i in range(len(seq) - k + 1):
+            kmer_all.append(kmer_neighbours(seq[i:i + k], d))
+    kmer_all = list(set([item for elem in kmer_all for item in elem]))
+    for kmer in kmer_all:
+        counter = 0
+        for seq in dna_seqs:
+            if len(motif_search_overlapping_approx(seq, kmer, d)) > 0:
+                counter += 1
+        if counter == len(dna_seqs):
+            kmer_motifs.append(kmer)
+    return set(kmer_motifs)
+
+
+def score_of_kmer_in_dna_list(kmer, dna_list):
+    '''
+    Function to return the score d(Pattern, Dna)
+    Given a k-mer Pattern and a set of strings Dna = {Dna1, … , Dnat}, 
+    we define d(Pattern, Dna) as the sum of distances (min. hamming distance for all possible kmers in a dna string)
+    between Pattern and all strings in Dna
+    Args:
+        kmer: a pattern
+        dna_list: a list of dna strings
+    Return:
+        The score defined in function definition
+    '''
+    score = 0
+    k = len(kmer)
+    for dna in dna_list:
+        d = len(kmer)
+        for i in range(len(dna) - k + 1):
+            if (hamming_distance(kmer, dna[i:i + k]) < d):
+                d = hamming_distance(kmer, dna[i:i + k])
+        score += d
+    return score
+
+
+def median_string(k, dna_list):
+    '''
+    Functio to return the median string 
+    median string is a k-mer Pattern that minimizes d(Pattern, Dna) over all k-mers Pattern
+    Args:
+        k: lenghth of pattern
+        dna_list: a list of dna strings
+
+    Return:
+        A median string
+    '''
+    # set median to arbitrary kmer
+    median = "A" * k
+
+    # to get all possible kmer, choose an arbitrary kmer and find its d-neighbours where d = k
+    all_possible_kmers = kmer_neighbours(median, k)
+
+    # set distance to maximum possible score
+    distance = k * len(dna_list)
+
+    for kmer in all_possible_kmers:
+        d = score_of_kmer_in_dna_list(kmer, dna_list)
+        if d < distance:
+            distance = d
+            median = kmer
+
+    return median
+
+
+def profile_probability(kmer, profile_matrix):
+    """
+    A function to return the probability of a kmer based on a profile matrix
+    Args:
+        kmer: the kmer
+        profile_matrix: the profile matrix
+    Return:
+        The probability of kmer computed w.r.t the profile matrix
+    """
+    matrix_row = {"A": 0, "C": 1, "G": 2, "T": 3}
+    probability = 1
+    for i in range(len(kmer)):
+        probability = probability*profile_matrix[matrix_row[kmer[i]]][i]
+    return probability
+
+
+def profile_probable_kmer(seq, k, profile_matrix):
+    '''
+    Function to return the most probable kmer in seq based on profile_matrix
+    Args:
+        seq: the sequence to pick kmers from
+        k: length of kmer
+        profile_matrix: profile matrix
+    Return:
+        The profile-most-probable kmer
+    '''
+    probable_kmer = "A"*k
+    probab = 0
+    for i in range(len(seq) - k + 1):
+        kmer = seq[i:i + k]
+        kmer_probab = profile_probability(kmer, profile_matrix)
+        if kmer_probab > probab:
+            probab = kmer_probab
+            probable_kmer = kmer
+    return probable_kmer

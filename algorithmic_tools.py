@@ -1,12 +1,4 @@
-from bioinformatics_tools import *
-# this algorithm is not computationally efficient
-# def fibonacci(n, k = 1):
-#     if n == 0:
-#         return 0
-#     if n == 1:
-#         return 1
-#     else:
-#         return (fibonacci((n - 1), k) + k * fibonacci((n - 2), k))
+# from bioinformatics_tools import *
 
 
 def fibonacci(n, k=1):
@@ -23,17 +15,6 @@ def fibonacci(n, k=1):
         n_1, n_2 = n_2, (n_2 + (n_1 * k))
     return n_1
 
-
-# def decaying_fibonacci(n, decay_rate, k=1):
-#     '''
-#     Function to return the nth term of a fibonacci series
-#     Args:
-#         n: the value of n
-#         k: factor by which F(n-2) is multiplied with (no of rabbit pairs, one rabbits pair gives birth to)
-#         decay_rate: number of terms a rabbit pair would be alive
-#     return:
-#         value: value of F(n)
-#     '''
 
 def fasta_to_dict(file_path):
     '''
@@ -102,6 +83,19 @@ def CountOccurrences(string, substring):
             break
     # return the value of count
     return count
+
+
+def hamming_distance(seq_1, seq_2):
+    '''Function to return the hamming distance between two DNA/RNA sequence'''
+    ham_dist = 0
+    if len(seq_1) != len(seq_2):
+        print("Invalid Sequence sent. Make sure both sequences are of same length")
+        return - 1
+    else:
+        for i in range(len(seq_1)):
+            if seq_1[i] != seq_2[i]:
+                ham_dist += 1
+        return ham_dist
 
 
 def kmer_frequencies(seq, k):
@@ -212,19 +206,6 @@ def min_skew_finder(seq):
     for i in range(len(seq) + 1):
         skew.append(seq[0:i].count("G") - seq[0:i].count("C"))
     return [i for i, x in enumerate(skew) if x == min(skew)]
-
-
-def hamming_distance(seq_1, seq_2):
-    '''Function to return the hamming distance between two DNA/RNA sequence'''
-    ham_dist = 0
-    if len(seq_1) != len(seq_2):
-        print("Invalid Sequence sent. Make sure both sequences are of same length")
-        return - 1
-    else:
-        for i in range(len(seq_1)):
-            if seq_1[i] != seq_2[i]:
-                ham_dist += 1
-        return ham_dist
 
 
 def motif_search_overlapping_approx(seq, subseq, d, init_pos=0):

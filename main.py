@@ -9,6 +9,9 @@ seq = "GGGCGGCTCG"
 
 # Print statements to validate functions
 
+# f = open("sample_fasta.txt", "r")
+# for i in f:
+#     dna_seqs.append(i.strip("\n"))
 
 # # dna_seq_validate()
 # convert sequence to DNA sequence in all uppercase
@@ -165,3 +168,37 @@ seq = "GGGCGGCTCG"
 # d = 1
 # for i in most_frequent_kmer_approx_reverse(seq, k, d):
 #     print(i, end=" ")
+
+
+# # motif_enumeration
+# k = 5
+# d = 2
+# dna_seqs = ['ATTTGGC', 'TGCCTTA', 'CGGTATC', 'GAAAATT']
+# for i in motif_enumeration(dna_seqs, k, d):
+#     print(i, end=" ")
+
+
+# # median_string()
+# dna_list = ["AAATTGACGCAT", "GACGACCACGTT",
+#             "CGTCAGCGCCTG", "GCTGAGCACCGG", "AGTACGGGACAG"]
+# k = 3
+# print(median_string(k, dna_list))
+
+
+# # profile_probability()
+# kmer = "CCGAG"
+# profile = [[0.2, 0.2, 0.3, 0.2, 0.3],
+#            [0.4, 0.3, 0.1, 0.5, 0.1],
+#            [0.3, 0.3, 0.5, 0.2, 0.4],
+#            [0.1, 0.2, 0.1, 0.1, 0.2]]
+# print(profile_probability(kmer, profile))
+
+
+# # profile_probable_kmer()
+# seq = "ACCTGTTTATTGCCTAAGTTCCGAACAAACCCAATATAGCCCGAGGGCCT"
+# k = 5
+# profile = [[0.2, 0.2, 0.3, 0.2, 0.3],
+#            [0.4, 0.3, 0.1, 0.5, 0.1],
+#            [0.3, 0.3, 0.5, 0.2, 0.4],
+#            [0.1, 0.2, 0.1, 0.1, 0.2]]
+# print(profile_probable_kmer(seq, k, profile))
