@@ -90,16 +90,14 @@ seq = "GGGCGGCTCG"
 
 
 # # profile_matrix() and consensus_sequence()
-# seq_dict = fasta_to_dict('sample_fasta.txt')
-# print(consensus_sequence(seq_dict))
-# p_m = profile_matrix(seq_dict)
-# x = 0
-# for p in p_m:
+# fDict = fasta_to_dict("sample_fasta.txt")
+# seqList = fDict.values()
+# print(consensus_sequence(profile_matrix(seqList)))
+# for x in range(4):
 #     print(Nucleotides[x], ": ", end="")
-#     for j in range(len(p)):
-#         print(p[j], end=" ")
+#     for j in profile_matrix(seqList)[x]:
+#         print(j, end=" ")
 #     print("\n")
-#     x += 1
 
 
 # # most_frequent_kmer()

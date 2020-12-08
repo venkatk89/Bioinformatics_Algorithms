@@ -9,7 +9,7 @@ import numpy as np
 
 def dna_seq_validate(seq):
     '''
-    Function to validate a seq 
+    Function to validate a seq
     Args: The DNA sequence
     Return: The processed string if valid DNA sequence
             0 if invalid DNA sequence
@@ -23,7 +23,7 @@ def dna_seq_validate(seq):
 
 
 def dna_freq_counter(seq):
-    ''' 
+    '''
     Function to find the length of a DNA or RNA sequence
     Args: The DNA sequence
     Return: dict containing the count of each nucleotides
@@ -204,25 +204,29 @@ def profile_matrix(seq_dict):
     Return:
         The profile matrix with row labels: [A, C, G, T]
     '''
-    x = len(list(seq_dict.values())[1])
-    count_A = [0] * x
-    count_C = [0] * x
-    count_G = [0] * x
-    count_T = [0] * x
-    for seq in seq_dict.values():
+    pMatrix = {}
+    for seq in seq_dict:
         for i in range(len(seq)):
-            if seq[i] == "A":
-                count_A[i] += 1
-            if seq[i] == "C":
-                count_C[i] += 1
-            if seq[i] == "G":
-                count_G[i] += 1
-            if seq[i] == "T":
-                count_T[i] += 1
-    return [count_A, count_C, count_G, count_T]
+            if(seq[i] == "A"):
+                if(not 0 in pMatrix.keys()):
+                    pMatrix[0] = [0] * len(seq)
+                pMatrix[0][i] += 1
+            elif(seq[i] == "C"):
+                if(not 1 in pMatrix.keys()):
+                    pMatrix[1] = [0] * len(seq)
+                pMatrix[1][i] += 1
+            elif(seq[i] == "G"):
+                if(not 2 in pMatrix.keys()):
+                    pMatrix[2] = [0] * len(seq)
+                pMatrix[2][i] += 1
+            elif(seq[i] == "T"):
+                if(not 3 in pMatrix.keys()):
+                    pMatrix[3] = [0] * len(seq)
+                pMatrix[3][i] += 1
+    return pMatrix
 
 
-def consensus_sequence(seq_dict):
+def consensus_sequence(profileMatrix):
     '''
     Function to return the consensus string from a dictionary of strings
     Args:
@@ -230,25 +234,20 @@ def consensus_sequence(seq_dict):
     Return:
         The consensus string
     '''
-    pro_mat = profile_matrix(seq_dict)
-    count_A, count_C, count_G, count_T = pro_mat[0], pro_mat[1], pro_mat[2], pro_mat[3]
-    con_seq = ""
-    for i in range(len(count_A)):
-        if (count_A[i] >= count_C[i]) and (count_A[i] >= count_T[i]) and (count_A[i] >= count_G[i]):
-            con_seq += "A"
-        elif (count_C[i] >= count_G[i]) and (count_C[i] >= count_T[i]):
-            con_seq += "C"
-        elif (count_G[i] >= count_T[i]):
-            con_seq += "G"
-        else:
-            con_seq += "T"
-    return con_seq
+    maxBaseIndices = [None]*len(profileMatrix[0])
+    for i in range(len(profileMatrix[0])):
+        currMax = 0
+        for j in range(4):
+            if(max(currMax, profileMatrix[j][i]) > currMax):
+                currMax = max(currMax, profileMatrix[j][i])
+                maxBaseIndices[i] = str(j)
+    return "".join(maxBaseIndices).replace("0", "A").replace("1", "C").replace("2", "G").replace("3", "T")
 
 
 def motif_enumeration(dna_seqs, k, d):
     '''
     A function to return all (k,d)-motifs appearing in list of DNA sequences
-    Given a collection of strings Dna and an integer d, a k-mer is a (k,d)-motif 
+    Given a collection of strings Dna and an integer d, a k-mer is a (k,d)-motif
     if it appears in every string from Dna with at most d mismatches
     Args:
         dna_seqs: A list of valid DNA sequences
@@ -276,7 +275,7 @@ def motif_enumeration(dna_seqs, k, d):
 def score_of_kmer_in_dna_list(kmer, dna_list):
     '''
     Function to return the score d(Pattern, Dna)
-    Given a k-mer Pattern and a set of strings Dna = {Dna1, … , Dnat}, 
+    Given a k-mer Pattern and a set of strings Dna = {Dna1, … , Dnat},
     we define d(Pattern, Dna) as the sum of distances (min. hamming distance for all possible kmers in a dna string)
     between Pattern and all strings in Dna
     Args:
@@ -298,7 +297,7 @@ def score_of_kmer_in_dna_list(kmer, dna_list):
 
 def median_string(k, dna_list):
     '''
-    Functio to return the median string 
+    Functio to return the median string
     median string is a k-mer Pattern that minimizes d(Pattern, Dna) over all k-mers Pattern
     Args:
         k: lenghth of pattern
