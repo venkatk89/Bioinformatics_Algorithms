@@ -359,3 +359,29 @@ def profile_probable_kmer(seq, k, profile_matrix):
             probab = kmer_probab
             probable_kmer = kmer
     return probable_kmer
+
+
+def longest_common_substring(dna_list):
+    '''
+    A function to return the shared motif (longest common substring among a list of dna sequences)
+    Args:
+        dna_list: a list of dna sequences
+    Return:
+        The longest common substring
+    '''
+    shared_motif = ""
+    short_string = min(dna_list, key=len)
+    max_k = len(short_string)
+    for i in range(max_k, 0, -1):
+        for j in range(max_k - i + 1):
+            substring = short_string[j:i+j]
+            count_substring = 0
+            for dna in dna_list:
+                if dna.count(substring) > 0:
+                    count_substring += 1
+            if count_substring == len(dna_list):
+                shared_motif = substring
+                break
+        if len(shared_motif) > 0:
+            break
+    return shared_motif

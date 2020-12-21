@@ -176,6 +176,13 @@ seq = "GGGCGGCTCG"
 #     print(i, end=" ")
 
 
+# # score_of_kmer_in_dna_list()
+# kmer = "AAA"
+# dna_list = ["TTACCTTAAC", "GATATCTGTC",
+#             "ACGGCGTTCG", "CCCTAAAGAG", "CGTCAGAGGT"]
+# print(score_of_kmer_in_dna_list(kmer, dna_list))
+
+
 # # median_string()
 # dna_list = ["AAATTGACGCAT", "GACGACCACGTT",
 #             "CGTCAGCGCCTG", "GCTGAGCACCGG", "AGTACGGGACAG"]
@@ -200,3 +207,13 @@ seq = "GGGCGGCTCG"
 #            [0.3, 0.3, 0.5, 0.2, 0.4],
 #            [0.1, 0.2, 0.1, 0.1, 0.2]]
 # print(profile_probable_kmer(seq, k, profile))
+
+
+# # motif_random_probability()
+# print(math.log10(motif_random_probability("ACGATACAA", 0.129)))
+
+
+# # longest_common_substring()
+# dna_dict = fasta_to_dict("sample_fasta.txt")
+# dna_list = list(dna_dict.values())
+# print(longest_common_substring(dna_list))

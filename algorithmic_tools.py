@@ -309,3 +309,25 @@ def most_frequent_kmer_approx_reverse(seq, k, d):
             list_of_kmers.append(key)
 
     return list_of_kmers
+
+
+def motif_random_probability(motif, gc_content):
+    '''
+    Function to return the probability of a motif occuring in random given the gc_content of the complete sequence
+    If the GC-content is x, then we set the symbol probability of C and G equal to x/2 
+    and the symbol probability of A and T equal to (1−x)/2
+    Args:
+        seq: the motif
+        gc_content: GC content of the sequence
+    Returns:
+        The probability that the motif occured by random chance
+    '''
+    symbol_probability = {"A": (1 - gc_content) / 2,
+                          "C": gc_content / 2,
+                          "T": (1 - gc_content) / 2,
+                          "G": gc_content / 2}
+    probability = 1
+    print(symbol_probability)
+    for i in motif:
+        probability = probability * symbol_probability[i]
+    return probability
