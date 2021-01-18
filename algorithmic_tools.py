@@ -37,6 +37,34 @@ def fasta_to_dict(file_path):
     return seq_dict
 
 
+def edge_list_format_reader(file_path):
+    '''
+    Function retrieve nodes and edges from file in edge list format
+    Args:
+        file_path: a string containing the file path
+    Return:
+        n: number of nodes
+        e: number of edges
+        edges: a list containing all edges(2 nodes connected by a edge)
+    '''
+    n = 0
+    e = 0
+    edges = []
+    f = open(file_path, "r")
+    start = -1
+    for i in f:
+        start = start + 1
+        if start == 0:
+            graph_params = i.strip().split()
+            n = int(graph_params[0])
+            e = int(graph_params[1])
+        if start > 0:
+            char_edge = i.strip().split()
+            int_edge = [int(j) for j in char_edge]
+            edges.append(int_edge)
+    return n, e, edges
+
+
 def motif_search_overlapping(seq, subseq, init_pos=0):
     '''
     Function to return the positions of occurances (1-indexed) of motifs in the genetic string
@@ -331,3 +359,68 @@ def motif_random_probability(motif, gc_content):
     for i in motif:
         probability = probability * symbol_probability[i]
     return probability
+
+
+def simple_graph_adjacency_matrix(n, e, edges):
+    '''
+    Function to return adjecency matrix of a simple graph
+    Args:
+        n: Number of nodes
+        e: Number of edges
+        edges: the undirectional vertices
+    Return:
+        The graph in a n*n matrix format (entries of the matrix mention connectivity b/w nodes)
+    '''
+    adjacency_matrix = [[0 for i in range(n)] for j in range(n)]
+
+    for i in range(e):
+        m = edges[i][0] - 1
+        n = edges[i][1] - 1
+        adjacency_matrix[m][n] = 1
+        adjacency_matrix[n][m] = 1
+
+    return adjacency_matrix
+
+
+def simple_graph_adjacency_list(n, e, edges):
+    '''
+    Function to return adjecency matrix of a simple graph
+    Args:
+        n: Number of nodes
+        e: Number of edges
+        edges: the undirectional vertices
+    Return:
+        The graph in a n*n matrix format (entries of the matrix mention connectivity b/w nodes)
+    '''
+    adjacency_list = {}
+
+    # initializing adjacency list
+    for i in range(n):
+        adjacency_list[i + 1] = []
+
+    for vertex in edges:
+        node_i = vertex[0]
+        node_j = vertex[1]
+        adjacency_list[node_i].append(node_j)
+        adjacency_list[node_j].append(node_i)
+
+    return adjacency_list
+
+
+def simple_graph_double_degree(adjacency_matrix, adjacency_list):
+    '''
+    Function to return double degree of all nodes in a simple graph
+    Args:
+        adjacency_matrix: the adjacency matrix of the simple graph
+        adjacency_list: the adjacency list of the simple graph
+    Return:
+        list containing double degrees of all nodes
+    '''
+    double_degrees = [0 for i in range(len(adjacency_matrix))]
+
+    for i in range(len(double_degrees)):
+        neighbouring_nodes = adjacency_list[i + 1]
+        for node in neighbouring_nodes:
+            double_degrees[i] += sum(adjacency_matrix[node - 1])
+
+    return double_degrees

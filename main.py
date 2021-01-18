@@ -217,3 +217,16 @@ seq = "GGGCGGCTCG"
 # dna_dict = fasta_to_dict("sample_fasta.txt")
 # dna_list = list(dna_dict.values())
 # print(longest_common_substring(dna_list))
+
+
+# # degree of simple graph
+# n, e, edges = edge_list_format_reader("sample_fasta.txt")
+# graph = simple_graph_adjacency_matrix(n, e, edges)
+# for node in graph:
+#     print(sum(node), end=" ")
+
+
+# # simple_graph_double_degree()
+# n, e, edges = edge_list_format_reader("sample_fasta.txt")
+# for i in simple_graph_double_degree(simple_graph_adjacency_matrix(n, e, edges), simple_graph_adjacency_list(n, e, edges)):
+#     print(i, end=" ")
