@@ -1,10 +1,10 @@
 
 #read base data and add columns accordingly
 base_data <- read.table("QC.GWAS.txt.gz", header = T) 
-colnames(base_data) <- c("SNP", "Chr", "Pos", "EA", "NEA", "EAF", "Beta", "SE", "Pvalue", "Neff")
+colnames(base_data) <- c("SNP", "Chr", "Pos", "Ref", "Alt", "MAF", "Beta", "SE", "Pvalue", "Neff")
  
-# Preparation of rsid_data
-# Use bash to filter only the columns containing chromosome, position, and rsid 
+# Preparation of rsid_data.  Make sure the genome build used to call variants of GWAS and the genome build of dbsnp are the same. 
+# Use bash to filter only the columns containing chromosome, position, and rsid.
 # The following command achieves this for the dbsnp dataset:
 ## zcat 00-common_all.vcf.gz | cut -f 1,2,3 > chrom_pos_rsid_dbsnp_common 
 
